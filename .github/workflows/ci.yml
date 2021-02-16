@@ -6,7 +6,7 @@ jobs:
   test:
     services:
       postgres:
-        image: kartoza/postgis
+        image: kartoza/postgis:11.5-2.5
         ports:
           - 5432:5432
         env:
