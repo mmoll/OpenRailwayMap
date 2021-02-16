@@ -20,6 +20,19 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: ./.github/actions/checkout
+      - name: Checkout API repo
+        uses: actions/checkout@v2
+        with:
+          path: orm
+      - name: Checkout CartoCSS repo
+        uses: actions/checkout@v2
+        with:
+          repository: OpenRailwayMap/OpenRailwayMap-CartoCSS
+          path: CartoCSS
+      - name: Checkout server-admin repo
+        uses: actions/checkout@v2
+        with:
+          repository: OpenRailwayMap/server-admin
+          path: server-admin
       - uses: ./.github/actions/prepare-database
       - uses: ./.github/actions/run-API
