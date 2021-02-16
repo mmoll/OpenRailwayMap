@@ -69,6 +69,7 @@ jobs:
           npm run start &
           sleep 3
           curl -o ../tests/actual/1.json 'http://localhost:9002/facility?name=Feldmoching'
+          curl -o ../tests/actual/2.json 'http://localhost:9002/facility?ref=MHRK'
         shell: bash
 
       - name: Grab actual JSON results as artifacts
