@@ -75,7 +75,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: API output
-          path:
-            - tests/actual/
-            - tests/known_good/
-
+          path: |
+            tests/actual/
+            tests/known_good/
