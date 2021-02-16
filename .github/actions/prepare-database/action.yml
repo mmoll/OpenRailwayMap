@@ -1,0 +1,27 @@
+name: 'Prepare Database'
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Install osm2pgsql and postgres-client
+      run: |
+        sudo apt update -qq
+        sudo apt install -yq --no-install-suggests --no-install-recommends osm2pgsql postgresql-client
+      shell: bash
+
+    - name: put pg passwd
+      run: |
+        echo 'localhost:5432:gis:openrailwaymap:gis_password' >~/.pgpass
+        chmod 0600 ~/.pgpass
+      shell: bash
+
+    - name: run osm2pgsql
+      run: |
+        osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/tests/planet-railway.osm.pbf
+      shell: bash
+
+    - name: prepare DB for API
+      run: |
+        psql -h localhost -d gis -U openrailwaymap -p 5432 -a -q -f server-admin/ansible/roles/website/tasks/files/api_views_and_indexes.sql
+      shell: bash

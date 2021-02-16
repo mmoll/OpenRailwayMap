@@ -20,61 +20,6 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: orm
-      - name: Checkout CartoCSS repo
-        uses: actions/checkout@v2
-        with:
-          repository: OpenRailwayMap/OpenRailwayMap-CartoCSS
-          path: CartoCSS
-      - name: Checkout server-admin repo
-        uses: actions/checkout@v2
-        with:
-          repository: OpenRailwayMap/server-admin
-          path: server-admin
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
-        with:
-         node-version: '10'
-      - name: Install npm deps
-        working-directory: orm/api
-        run: |
-          npm install
-        shell: bash
-
-      - name: Install osm2pgsql and postgres-client
-        run: |
-          sudo apt update -qq
-          sudo apt install -yq --no-install-suggests --no-install-recommends osm2pgsql postgresql-client
-        shell: bash
-
-      - name: put pg passwd
-        run: |
-          echo 'localhost:5432:gis:openrailwaymap:gis_password' >~/.pgpass
-          chmod 0600 ~/.pgpass
-        shell: bash
-
-      - name: run osm2pgsql
-        run: |
-          osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/tests/planet-railway.osm.pbf
-        shell: bash
-
-      - name: prepare DB for API
-        run: |
-          psql -h localhost -d gis -U openrailwaymap -p 5432 -a -q -f server-admin/ansible/roles/website/tasks/files/api_views_and_indexes.sql
-
-      - name: start API service
-        working-directory: orm/api
-        run: |
-          npm run start &
-          sleep 3
-          curl -o ../../output.json 'http://localhost:9002/facility?name=Feldmoching'
-        shell: bash
-
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: API output
-          path: output.json
+      - uses: ./.github/actions/checkout
+      - uses: ./.github/actions/prepare-database
+      - uses: ./.github/actions/run-API
