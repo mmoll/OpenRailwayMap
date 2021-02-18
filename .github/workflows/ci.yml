@@ -47,7 +47,7 @@ jobs:
         shell: bash
       - name: run osm2pgsql
         run: |
-          osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/tests/planet-railway.osm.pbf
+          osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/tests/bayern-railway.osm.pbf
         shell: bash
       - name: prepare DB for API
         run: |
