@@ -4,8 +4,9 @@ from pytest import approx
 
 API_BASE_URL = 'http://localhost:9002'
 
+
 def test_get_facility_by_name():
-    response = requests.get(f'{API_BASE_URL}/facility?name=feldmoching')
+    response = requests.get(f'{API_BASE_URL}/facility', params={'name': 'feldmoching'})
 
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json; charset=utf-8'
@@ -38,7 +39,7 @@ def test_get_facility_by_name():
 
 
 def test_get_facility_by_name_with_spaces():
-    response = requests.get(f'{API_BASE_URL}/facility?name=fischbach nürnberg')
+    response = requests.get(f'{API_BASE_URL}/facility', params={'name': 'fischbach nürnberg'})
 
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json; charset=utf-8'
@@ -60,7 +61,7 @@ def test_get_facility_by_name_with_spaces():
 
 
 def test_get_facility_by_ref():
-    response = requests.get(f'{API_BASE_URL}/facility?ref=mhrk')
+    response = requests.get(f'{API_BASE_URL}/facility', params={'ref':'mhrk'})
 
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json; charset=utf-8'
@@ -82,7 +83,7 @@ def test_get_facility_by_ref():
 
 
 def test_get_facility_by_uicref():
-    response = requests.get(f'{API_BASE_URL}/facility?uicref=8000284')
+    response = requests.get(f'{API_BASE_URL}/facility', params={'uicref': '8000284'})
 
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'application/json; charset=utf-8'
