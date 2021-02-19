@@ -4,7 +4,6 @@ from pytest import approx
 
 API_BASE_URL = 'http://localhost:9002'
 
-
 def test_get_facility_by_name():
     response = requests.get(f'{API_BASE_URL}/facility?name=Feldmoching')
 
@@ -15,8 +14,8 @@ def test_get_facility_by_name():
 
     assert len(response_body) == 2
 
-    assert response_body[0]["lat"] == approx(11.5410187, rel=1e-5)
-    assert response_body[0]["lon"] == approx(48.213790699886196, rel=1e-5)
+    assert response_body[0]["lat"] == approx(11.5410187)
+    assert response_body[0]["lon"] == approx(48.213790699886196)
     assert response_body[0]["name"] == "Feldmoching"
     assert response_body[0]["uicname"] is None
     assert response_body[0]["uicref"] is None
@@ -26,8 +25,8 @@ def test_get_facility_by_name():
     assert response_body[0]["operator"] is None
     assert response_body[0]["stationcategory"] is None
 
-    assert response_body[1]["lat"] == approx(11.541275300000001, rel=1e-5)
-    assert response_body[1]["lon"] == approx(48.213803599886198, rel=1e-5)
+    assert response_body[1]["lat"] == approx(11.541275300000001)
+    assert response_body[1]["lon"] == approx(48.213803599886198)
     assert response_body[1]["name"] == "Feldmoching"
     assert response_body[1]["uicname"] is None
     assert response_body[1]["uicref"] == "8004147"
@@ -48,8 +47,8 @@ def test_get_facility_by_ref():
 
     assert len(response_body) == 1
 
-    assert response_body[0]["lat"] == approx(11.5096112, rel=1e-5)
-    assert response_body[0]["lon"] == approx(48.043303899927402, rel=1e-5)
+    assert response_body[0]["lat"] == approx(11.5096112)
+    assert response_body[0]["lon"] == approx(48.043303899927402)
     assert response_body[0]["name"] == "Höllriegelskreuth"
     assert response_body[0]["uicname"] is None
     assert response_body[0]["uicref"] == "8002899"
