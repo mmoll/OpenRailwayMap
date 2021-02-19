@@ -47,7 +47,7 @@ jobs:
         shell: bash
       - name: run osm2pgsql
         run: |
-          osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/tests/bayern-railway.osm.pbf
+          osm2pgsql -H localhost -U openrailwaymap -d gis --merc --multi-geometry --hstore --style CartoCSS/setup/openstreetmap-carto.style --tag-transform CartoCSS/setup/openstreetmap-carto.lua --cache 256 --slim orm/api/tests/bayern-railway.osm.pbf
         shell: bash
       - name: prepare DB for API
         run: |
@@ -63,19 +63,19 @@ jobs:
         run: |
           npm install
         shell: bash
-      - name: Start API service and fetch results
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install pip deps
+        run: pip install -r requirements.txt
+        working-directory: orm/api
+
+      - name: Start API service and run tests
         working-directory: orm/api
         run: |
           npm run start &
-          sleep 3
-          curl -o ../tests/actual/1.json 'http://localhost:9002/facility?name=Feldmoching'
-          curl -o ../tests/actual/2.json 'http://localhost:9002/facility?ref=MHRK'
+          sleep 1
+          pytest
         shell: bash
-
-      - name: Grab actual JSON results as artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: API output
-          path: |
-            orm/tests/actual/
-            orm/tests/known_good/
