@@ -7,9 +7,6 @@
 	*/
 
 
-	// email address to send error reports to
-	$mail = "info@openrailwaymap.org";
-
 	// base part of the server url, must end with '/'
 	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) {
 		$urlbase = 'https://';
@@ -56,6 +53,4 @@
 	);
 	// name of application
 	$appname = "OpenRailwayMap";
-	// useragent used for curl requests
-	$useragent = "openrailwaymap.org";
-?>
+

@@ -26,13 +26,6 @@
 	}
 
 
-	// returns the IP address of the current user; returns x-forwarded-for behind proxies
-	function getUserIP()
-	{
-		return ($_SERVER['REMOTE_ADDR'] != "127.0.0.1") ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}
-
-
 	// return an array of the user's languages, sorted by importance
 	function getLangs()
 	{
@@ -70,50 +63,6 @@
 	}
 
 
-	// checks if given offset-parameter is valid and takes standard value if missing
-	function offset($offset)
-	{
-		if (!$offset)
-			return 0;
-
-		if (strlen($offset) > 4)
-			return 0;
-
-		return $offset;
-	}
-
-
-	// parse given bbox-string and check if given bbox is valid
-	function getBbox($bbox)
-	{
-		// if no bbox is given
-		if (!$bbox)
-			return false;
-
-		// if bbox isn't too big
-		if (abs($right - $left) > 0.5 or abs($top - $bottom) > 0.2)
-			return false;
-
-		// parsing values from given string
-		$coordinates = explode(",", $bbox);
-		// switch values if they are in wrong order
-		if ($coordinates[0] > $right)
-		{
-			$temp = $coordinates[0];
-			$coordinates[0] = $coordinates[2];
-			$coordinates[2] = $temp;
-		}
-		if ($bottom > $top)
-		{
-			$temp = $coordinates[3];
-			$coordinates[3] = $coordinates[1];
-			$coordinates[1] = $temp;
-		}
-
-		return $coordinates;
-	}
-
-
 	// checks if given type-parameter is valid
 	function isValidType($type)
 	{
@@ -130,13 +79,13 @@
 
 
 	// checks if given osm id is valid
-	function isValidId($id)
+	function isValidInteger($input)
 	{
-		if (!$id || !isset($id) || !isset($_GET[$id]))
+		if (!$input || !isset($input) || !isset($_GET[$input]))
 			return false;
 
-		$id = $_GET[$id];
-		if (!ctype_digit($id))
+		$input = $_GET[$input];
+		if (!ctype_digit($input))
 			return false;
 
 		return true;
@@ -151,20 +100,6 @@
 
 		$coord = $_GET[$coord];
 		if (!is_numeric($coord))
-			return false;
-
-		return true;
-	}
-
-
-	// checks if given zoom level is valid
-	function isValidZoom($zoom)
-	{
-		if (!$zoom || !isset($zoom) || !isset($_GET[$zoom]))
-			return false;
-
-		$zoom = $_GET[$zoom];
-		if (!ctype_digit($zoom))
 			return false;
 
 		return true;
@@ -190,7 +125,7 @@
 		echo "<script type=\"text/javascript\">\n";
 			echo "var params={\n";
 			echo "urlbase : '" . $urlbase . "',\n";
-			echo "id : ".(isValidId('id') ? ($_GET['id']) : ("null")).",\n";
+			echo "id : ".(isValidInteger('id') ? ($_GET['id']) : ("null")).",\n";
 			echo "type : ".(isValidType('type') ? ("'".$_GET['type']."'") : ("null")).",\n";
 			echo "lat : ";
 				if (isValidCoordinate('lat'))
@@ -202,7 +137,7 @@
 					echo $_GET['lon'].",\n";
 				else
 					echo "null,\n";
-			echo "zoom : " . (isValidZoom('zoom') ? ($_GET['zoom']) : ("null")) . ",\n";
+			echo "zoom : " . (isValidInteger('zoom') ? ($_GET['zoom']) : ("null")) . ",\n";
 			echo "lang : " . (isset($_GET['lang']) ? ("'".$_GET['lang']."'") : ("null")) . ",\n";
 			echo "offset : " . (isValidOffset('offset') ? ($_GET['offset']) : ("null")) . ",\n";
 			echo "searchquery : " . (isset($_GET['q']) ? (json_encode($_GET['q'])) : ("''")) . ",\n";
