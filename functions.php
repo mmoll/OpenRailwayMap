@@ -15,8 +15,9 @@
 	{
 		global $langs;
 
-		if ((!$lang) || (!array_key_exists($lang, $langs)))
+		if ((!$lang) || (!array_key_exists($lang, $langs))) {
 			$lang = getUserLang();
+		}
 
 		putenv('LANGUAGE=');
 		setlocale(LC_ALL, $langs[$lang][0]);
@@ -27,14 +28,14 @@
 
 
 	// return an array of the user's languages, sorted by importance
-	function getLangs()
+	function getLangs(): array
 	{
 		$header = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 		$lang = explode(",", $header);
 
 		$i = 0;
-		foreach ($lang as $value)
-		{
+		$langs = [];
+		foreach ($lang as $value) {
 			$entry = explode(";", $value);
 			$langpair = explode("-", $entry[0]);
 			$langs[$i] = $langpair[0];
@@ -46,7 +47,7 @@
 
 
 	// returns the most matching language of the user
-	function getUserLang()
+	function getUserLang(): string
 	{
 		global $langs;
 
@@ -54,9 +55,11 @@
 		$langlist = getLangs();
 
 		// choose most matching language from available langs
-		foreach ($langlist as $value)
-			if (array_key_exists($value, $langs))
+		foreach ($langlist as $value) {
+			if (array_key_exists($value, $langs)) {
 				return $value;
+			}
+		}
 
 		// if no matching language could be found, choose english
 		return "en";
@@ -64,59 +67,55 @@
 
 
 	// checks if given type-parameter is valid
-	function isValidType($type)
+	function isValidType($type): bool
 	{
-		if (!$type || !isset($type) || !isset($_GET[$type]))
+		if (!isset($type, $_GET[$type]) || !$type) {
 			return false;
+		}
 
 		$type = $_GET[$type];
 		// check if given object type is invalid
-		if (($type != "node") && ($type != "way") && ($type != "relation"))
-			return false;
-
-		return true;
+		return !in_array($type,  ["node", "way", "relation"]);
 	}
 
 
 	// checks if given osm id is valid
-	function isValidInteger($input)
+	function isValidInteger($input): bool
 	{
-		if (!$input || !isset($input) || !isset($_GET[$input]))
+		if (!isset($input, $_GET[$input]) || !$input) {
 			return false;
+		}
 
 		$input = $_GET[$input];
-		if (!ctype_digit($input))
+		if (!ctype_digit($input)) {
 			return false;
+		}
 
 		return true;
 	}
 
 
 	// checks if given coordinate is valid
-	function isValidCoordinate($coord)
+	function isValidCoordinate($coord): bool
 	{
-		if (!$coord || !isset($coord) || !isset($_GET[$coord]))
+		if (!isset($coord, $_GET[$coord]) || !$coord) {
 			return false;
+		}
 
 		$coord = $_GET[$coord];
-		if (!is_numeric($coord))
-			return false;
-
-		return true;
+		return is_numeric($coord);
 	}
 
 
 	// checks if given timezone offset is valid
-	function isValidOffset($offset)
+	function isValidOffset($offset): bool
 	{
-		if (!$offset || !isset($offset) || !isset($_GET[$offset]))
+		if (!isset($offset, $_GET[$offset]) || !$offset) {
 			return false;
+		}
 
 		$offset = $_GET[$offset];
-		if (!is_numeric($offset))
-			return false;
-
-		return true;
+		return is_numeric($offset);
 	}
 
 
@@ -128,15 +127,17 @@
 			echo "id : ".(isValidInteger('id') ? ($_GET['id']) : ("null")).",\n";
 			echo "type : ".(isValidType('type') ? ("'".$_GET['type']."'") : ("null")).",\n";
 			echo "lat : ";
-				if (isValidCoordinate('lat'))
-					echo $_GET['lat'].",\n";
-				else
+				if (isValidCoordinate('lat')) {
+					echo $_GET['lat'] . ",\n";
+				} else {
 					echo "null,\n";
+				}
 			echo "lon : ";
-				if (isValidCoordinate('lon'))
-					echo $_GET['lon'].",\n";
-				else
+				if (isValidCoordinate('lon')) {
+					echo $_GET['lon'] . ",\n";
+				} else {
 					echo "null,\n";
+				}
 			echo "zoom : " . (isValidInteger('zoom') ? ($_GET['zoom']) : ("null")) . ",\n";
 			echo "lang : " . (isset($_GET['lang']) ? ("'".$_GET['lang']."'") : ("null")) . ",\n";
 			echo "offset : " . (isValidOffset('offset') ? ($_GET['offset']) : ("null")) . ",\n";
@@ -145,10 +146,10 @@
 			echo "name : " . (isset($_GET['name']) ? (json_encode($_GET['name'])) : ("null")) . ",\n";
 			echo "line : " . (isset($_GET['line']) ? (json_encode($_GET['line'])) : ("null")) . ",\n";
 			echo "operator : " . (isset($_GET['operator']) ? (json_encode($_GET['operator'])) : ("null")) . ",\n";
-			if ($checkMobile)
+			if ($checkMobile) {
 				echo "mobile : " . (isset($_GET['mobile']) ? (($_GET['mobile'] != '0' && $_GET['mobile'] != 'false') ? "true" : "false") : ("null")) . ",\n";
+			}
 			echo "style : " . (isset($_GET['style']) ? (json_encode($_GET['style'])) : ("null")) . "\n";
 			echo "};\n";
 		echo "</script>\n";
 	}
-?>

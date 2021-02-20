@@ -8,11 +8,11 @@
 
 	require_once("functions.php");
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs))
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
 		$lang = $_GET['lang'];
-	else
+	} else {
 		$lang = getUserLang();
-
+	}
 	includeLocale($lang);
 ?>
 <!DOCTYPE html>
@@ -113,12 +113,12 @@
 			<div class="box">
 				<div class="headEntry"><?=_("Language")?></div>
 				<?php
-					foreach ($langs as $short => $name)
-					{
-						if ($short == $lang)
-							echo '<div class="resultEntry">'.$name[1].'<small>&#10003;</small></div>';
-						else
+					foreach ($langs as $short => $name) {
+						if ($short == $lang) {
+							echo '<div class="resultEntry">' . $name[1] . '<small>&#10003;</small></div>';
+						} else {
 							echo '<div class="resultEntry" onclick="changeLanguage(\''.$short.'\')">'.$name[1].'</div>';
+						}
 					}
 				?>
 			</div>

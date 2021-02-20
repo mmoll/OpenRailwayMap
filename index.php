@@ -8,10 +8,11 @@
 
 	require_once("functions.php");
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs))
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
 		$lang = $_GET['lang'];
-	else
+	} else {
 		$lang = getUserLang();
+	}
 
 	includeLocale($lang);
 ?>
@@ -83,11 +84,11 @@
 			<form id="langSelection">
 				<select id="langSelector" size="1" onChange="changeLanguage(gEBI('langSelector').options[gEBI('langSelector').selectedIndex].value)">
 					<?php
-						foreach ($langs as $short => $name)
-						{
+						foreach ($langs as $short => $name) {
 							echo "<option value=\"".$short."\"";
-							if ($short == $lang)
+							if ($short == $lang) {
 								echo " selected";
+							}
 							echo ">".$name[1]."</option>\n";
 						}
 					?>

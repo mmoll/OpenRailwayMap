@@ -8,10 +8,11 @@
 
 	require_once("functions.php");
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs))
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
 		$lang = $_GET['lang'];
-	else
+	} else {
 		$lang = getUserLang();
+	}
 
 	includeLocale($lang);
 ?>

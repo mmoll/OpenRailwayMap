@@ -16,13 +16,15 @@
 		$defaultport = 80;
 	}
 	$urlbase .= $_SERVER['SERVER_NAME'];
-	if ($_SERVER['SERVER_PORT'] != $defaultport)
+	if ($_SERVER['SERVER_PORT'] != $defaultport) {
 		$urlbase .= ':' . $_SERVER['SERVER_PORT'];
+	}
 	unset($defaultport);
 	$urlbase .= $_SERVER['CONTEXT_PREFIX'];
 	$subdir = dirname(substr($_SERVER['SCRIPT_FILENAME'], strlen($_SERVER['CONTEXT_DOCUMENT_ROOT'])));
-	if ($subdir === '.')
+	if ($subdir === '.') {
 		$subdir = '';
+	}
 	$urlbase .= $subdir . '/';
 	unset($subdir);
 
