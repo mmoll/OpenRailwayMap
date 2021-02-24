@@ -7,14 +7,19 @@
 	*/
 
 
-	require_once("functions.php");
+namespace OpenRailwayMap;
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
+require_once("functions.php");
+
+use OpenRailwayMap\Config;
+use OpenRailwayMap\Functions;
+
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], Config::LANGS)) {
 		$lang = $_GET['lang'];
 	} else {
-		$lang = getUserLang();
+		$lang = (new Functions)->getUserLang();
 	}
-	includeLocale($lang);
+(new Functions)->includeLocale($lang);
 
 	$zoom = isset($_GET['zoom']) ? ($_GET['zoom']) : (null);
 	$filename = isset($_GET['style']) ? ("styles/".$_GET['style'].".json") : (null);
@@ -22,7 +27,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><?=$appname?></title>
+		<title><?=Config::APP_NAME?></title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" href="css/legend.css" />
 		<script type="text/javascript" src="renderer/kothic/kothic.js"></script>
@@ -43,22 +48,6 @@
 	<?php
 		$output = "";
 
-		function writeLine($index, $height, $payload, $caption): string
-		{
-			$line = "\t\t\t<tr><td";
-
-			if ($height) {
-				$line .= ' style="height: ' . $height . 'px;"';
-			} else {
-				$height = '16';
-			}
-
-			return $line . '><canvas width="80" height="' . $height . '" id="legend-' . $index
-					. '" data-geojson=' . "'" . $payload
-					. "'></canvas></td>\n\t\t\t\t<td>"
-					. htmlspecialchars(_($caption), ENT_COMPAT) . "</td></tr>\n";
-		}
-
 		if (file_exists($filename)) {
 			$legend = json_decode(file_get_contents($filename), true);
 			$cnt = -1;
@@ -73,10 +62,10 @@
 						foreach ($feature['replace'] as $replace) {
 							$caption = str_replace(array_keys($replace), $replace, _($feature['caption']));
 							$payload = str_replace(array_keys($replace), $replace, json_encode($feature['features']));
-							$output .= writeLine(++$cnt, $lineheight, $payload, $caption);
+							$output .= (new Functions)->writeLine(++$cnt, $lineheight, $payload, $caption);
 						}
 					} else {
-						$output .= writeLine(++$cnt, $lineheight, json_encode($feature['features']), _($feature['caption']));
+						$output .= (new Functions)->writeLine(++$cnt, $lineheight, json_encode($feature['features']), _($feature['caption']));
 					}
 				}
 			}

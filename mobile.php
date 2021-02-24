@@ -1,19 +1,17 @@
 <?php
-	/*
-	OpenRailwayMap Copyright (C) 2012 Alexander Matheisen
-	This program comes with ABSOLUTELY NO WARRANTY.
-	This is free software, and you are welcome to redistribute it under certain conditions.
-	See https://wiki.openstreetmap.org/wiki/OpenRailwayMap for details.
-	*/
+namespace OpenRailwayMap;
 
-	require_once("functions.php");
+    require_once("functions.php");
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
+    use OpenRailwayMap\Config;
+    use OpenRailwayMap\Functions;
+
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], Config::LANGS)) {
 		$lang = $_GET['lang'];
 	} else {
-		$lang = getUserLang();
+		$lang = (new Functions)->getUserLang();
 	}
-	includeLocale($lang);
+    (new Functions)->includeLocale($lang);
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,7 +51,7 @@
 		<script>L_DISABLE_3D = true;</script>
 
 		<?php
-			urlArgsToParam(true, $urlbase);
+		(new Functions)->urlArgsToParam(true, (new Functions)->getUrlBase());
 		?>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>
@@ -113,7 +111,7 @@
 			<div class="box">
 				<div class="headEntry"><?=_("Language")?></div>
 				<?php
-					foreach ($langs as $short => $name) {
+					foreach (Config::LANGS as $short => $name) {
 						if ($short == $lang) {
 							echo '<div class="resultEntry">' . $name[1] . '<small>&#10003;</small></div>';
 						} else {

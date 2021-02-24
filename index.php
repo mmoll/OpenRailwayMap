@@ -6,15 +6,20 @@
 	See https://wiki.openstreetmap.org/wiki/OpenRailwayMap for details.
 	*/
 
-	require_once("functions.php");
+    namespace OpenRailwayMap;
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
+    require_once("functions.php");
+
+	use OpenRailwayMap\Config;
+	use OpenRailwayMap\Functions;
+
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], Config::LANGS)) {
 		$lang = $_GET['lang'];
 	} else {
-		$lang = getUserLang();
+		$lang = (new Functions)->getUserLang();
 	}
 
-	includeLocale($lang);
+(new Functions)->includeLocale($lang);
 ?>
 <!DOCTYPE html>
 <html>
@@ -52,7 +57,7 @@
 		<script src="js/Leaflet.EditInOSM.js"></script>
 		<script type="text/javascript" src="js/L.TileLayer.Grayscale.js"></script>
 		<?php
-			urlArgsToParam(true, $urlbase);
+        (new Functions)->urlArgsToParam(true, (new Functions())->getUrlBase());
 		?>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>
@@ -84,7 +89,7 @@
 			<form id="langSelection">
 				<select id="langSelector" size="1" onChange="changeLanguage(gEBI('langSelector').options[gEBI('langSelector').selectedIndex].value)">
 					<?php
-						foreach ($langs as $short => $name) {
+						foreach (Config::LANGS as $short => $name) {
 							echo "<option value=\"".$short."\"";
 							if ($short == $lang) {
 								echo " selected";

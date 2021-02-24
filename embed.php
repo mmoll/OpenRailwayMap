@@ -6,15 +6,19 @@
 	See https://wiki.openstreetmap.org/wiki/OpenRailwayMap for details.
 	*/
 
-	require_once("functions.php");
+namespace OpenRailwayMap;
 
-	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs)) {
+require_once("functions.php");
+
+use OpenRailwayMap\Config;
+use OpenRailwayMap\Functions;
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], Config::LANGS)) {
 		$lang = $_GET['lang'];
 	} else {
-		$lang = getUserLang();
+		$lang = (new Functions)->getUserLang();
 	}
 
-	includeLocale($lang);
+(new Functions)->includeLocale($lang);
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,7 +47,7 @@
 		<script type="text/javascript" src="js/leaflet.js"></script>
 		<script type="text/javascript" src="js/L.TileLayer.Grayscale.js"></script>
 		<?php
-			urlArgsToParam(false, $urlbase);
+		(new Functions)->urlArgsToParam(false, (new Functions)->getUrlBase());
 		?>
 		<script type="text/javascript" src="js/startposition.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
