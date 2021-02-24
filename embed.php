@@ -47,7 +47,7 @@ use OpenRailwayMap\Functions;
 		<script type="text/javascript" src="js/leaflet.js"></script>
 		<script type="text/javascript" src="js/L.TileLayer.Grayscale.js"></script>
 		<?php
-		(new Functions)->urlArgsToParam(false, (new Functions)->getUrlBase());
+		(new Functions)->urlArgsToParam(false);
 		?>
 		<script type="text/javascript" src="js/startposition.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>

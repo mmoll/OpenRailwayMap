@@ -51,7 +51,7 @@ namespace OpenRailwayMap;
 		<script>L_DISABLE_3D = true;</script>
 
 		<?php
-		(new Functions)->urlArgsToParam(true, (new Functions)->getUrlBase());
+		(new Functions)->urlArgsToParam(true);
 		?>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>

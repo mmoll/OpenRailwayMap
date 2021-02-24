@@ -56,8 +56,10 @@
 		<link rel="stylesheet" href="css/Leaflet.EditInOSM.css" />
 		<script src="js/Leaflet.EditInOSM.js"></script>
 		<script type="text/javascript" src="js/L.TileLayer.Grayscale.js"></script>
-		<?php
-        (new Functions)->urlArgsToParam(true, (new Functions())->getUrlBase());
+		<script type="text/javascript">
+		    var params=<?= (new Functions)->urlArgsToParam(true); ?>
+		</script>
+
 		?>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>
