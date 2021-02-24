@@ -49,3 +49,5 @@ img/edit-in-osm.png
 js/Leaflet.EditInOSM.js
 
 js/L.TileLayer.Grayscale.js
+
+__pycache__
