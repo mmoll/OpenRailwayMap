@@ -97,41 +97,45 @@ class Functions
 		return 'en';
 	}
 
+    private function getParameter(string $parameter): ?string
+    {
+        if (isset($_GET[$parameter])) {
+            $value = $_GET[$parameter];
+            if ($value !== '') {
+                return $value;
+            }
+        }
+        return null;
+    }
 
 	public function urlArgsToParam(bool $checkMobile): string
 	{
 		$jsonParams = new JSONParams();
 
 		$jsonParams->setUrlbase($this->getUrlBase());
+        $jsonParams->setId($this->getParameter('id'));
+        $jsonParams->setType($this->getParameter('type'));
+        $jsonParams->setLat($this->getParameter('lat'));
+        $jsonParams->setLon($this->getParameter('lon'));
+        $jsonParams->setZoom($this->getParameter('zoom'));
+        $jsonParams->setLang($this->getParameter('lang'));
+        $jsonParams->setOffset($this->getParameter('offset'));
+        $jsonParams->setSearchquery($this->getParameter('q'));
+        $jsonParams->setRef($this->getParameter('ref'));
+        $jsonParams->setName($this->getParameter('name'));
+        $jsonParams->setLine($this->getParameter('line'));
+        $jsonParams->setOperator($this->getParameter('operator'));
+        $jsonParams->setStyle($this->getParameter('style'));
 
-//		echo "id : " . ($this->isValidInteger('id') ? ($_GET['id']) : ("null")) . ",\n";
-//		echo "type : " . ($this->isValidType('type') ? ("'" . $_GET['type'] . "'") : ("null")) . ",\n";
-//		echo "lat : ";
-//		if ($this->isValidCoordinate('lat')) {
-//			echo $_GET['lat'] . ",\n";
-//		} else {
-//			echo "null,\n";
-//		}
-//		echo "lon : ";
-//		if ($this->isValidCoordinate('lon')) {
-//			echo $_GET['lon'] . ",\n";
-//		} else {
-//			echo "null,\n";
-//		}
-//		echo "zoom : " . ($this->isValidInteger('zoom') ? ($_GET['zoom']) : ("null")) . ",\n";
-//		echo "lang : " . (isset($_GET['lang']) ? ("'" . $_GET['lang'] . "'") : ("null")) . ",\n";
-//		echo "offset : " . ($this->isValidOffset('offset') ? ($_GET['offset']) : ("null")) . ",\n";
-//		echo "searchquery : " . (isset($_GET['q']) ? (json_encode($_GET['q'])) : ("''")) . ",\n";
-//		echo "ref : " . (isset($_GET['ref']) ? (json_encode($_GET['ref'])) : ("null")) . ",\n";
-//		echo "name : " . (isset($_GET['name']) ? (json_encode($_GET['name'])) : ("null")) . ",\n";
-//		echo "line : " . (isset($_GET['line']) ? (json_encode($_GET['line'])) : ("null")) . ",\n";
-//		echo "operator : " . (isset($_GET['operator']) ? (json_encode($_GET['operator'])) : ("null")) . ",\n";
-//		if ($checkMobile) {
-//			echo "mobile : " . (isset($_GET['mobile']) ? (($_GET['mobile'] != '0' && $_GET['mobile'] != 'false') ? "true" : "false") : ("null")) . ",\n";
-//		}
-//		echo "style : " . (isset($_GET['style']) ? (json_encode($_GET['style'])) : ("null")) . "\n";
+		if ($checkMobile && isset($_GET['mobile'])) {
+            if ($_GET['mobile'] !== '0' && $_GET['mobile'] !== 'false') {
+                $jsonParams->setMobile(true);
+            } else {
+                $jsonParams->setMobile(false);
+            }
+        }
 
-		$json = json_encode($jsonParams);
+		$json = json_encode($jsonParams, JSON_THROW_ON_ERROR);
 
 		return $json;
 	}
