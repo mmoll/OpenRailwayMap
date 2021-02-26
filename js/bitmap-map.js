@@ -59,7 +59,7 @@ function createMap(embed)
 			offset = -(now.getTimezoneOffset() / 60);
 		}
 
-		map = L.map('mapFrame', { editInOSMControlOptions: { zoomThreshold: 14, editors: [ 'josm' ] }, });
+		map = L.map('mapFrame', { fadeAnimation: false, editInOSMControlOptions: { zoomThreshold: 14, editors: [ 'josm' ] }, });
 
 		if (!embed)
 		{
