@@ -169,7 +169,7 @@ function getPermalinkUrl(style, lang)
 	if (params['offset'] != null)
 		url += '&offset='+params['offset'];
 
-	if (params['searchquery'] != "")
+	if (params['searchquery'] != "" && params['searchquery'] != null)
 		url += '&q='+params['searchquery'];
 
 	if (params['ref'] != null)
