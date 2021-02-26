@@ -2,7 +2,9 @@
 
 namespace OpenRailwayMap;
 
-class JSONParams
+use JsonSerializable;
+
+class JSONParams implements JsonSerializable
 {
 // checks if given type-parameter is valid
 	private function isValidType(?string $type): bool
@@ -154,5 +156,15 @@ class JSONParams
 	public function setStyle(?string $style): void
 	{
 		$this->style = $style;
+	}
+
+	public function jsonSerialize(): array
+	{
+		$array = (array) $this;
+		$result = array_filter($array, function($value) {
+			return !is_null($value);
+		});
+
+		return $result;
 	}
 }

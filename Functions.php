@@ -8,8 +8,8 @@ See https://wiki.openstreetmap.org/wiki/OpenRailwayMap for details.
 
 namespace OpenRailwayMap;
 
-require_once('config.php');
-require_once('jsonparams.php');
+require_once('Config.php');
+require_once('JSONParams.php');
 
 use OpenRailwayMap\Config;
 

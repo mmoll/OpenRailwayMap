@@ -8,7 +8,7 @@
 
     namespace OpenRailwayMap;
 
-    require_once("functions.php");
+    require_once("Functions.php");
 
 	use OpenRailwayMap\Config;
 	use OpenRailwayMap\Functions;
