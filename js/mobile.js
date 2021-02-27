@@ -59,6 +59,7 @@ function createMap(embed)
 			offset = -(now.getTimezoneOffset() / 60);
 		}
 
+		// fadeAnimation: false - https://github.com/Zverik/leaflet-grayscale#usage
 		map = L.map('mapFrame', { fadeAnimation: false, editInOSMControlOptions: { zoomThreshold: 14, editors: [ 'josm' ] }, });
 
 		if (!embed)

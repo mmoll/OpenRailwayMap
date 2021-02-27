@@ -59,7 +59,9 @@ function createMap(embed)
 			offset = -(now.getTimezoneOffset() / 60);
 		}
 
-		map = L.map('mapFrame', { fadeAnimation: false, editInOSMControlOptions: { zoomThreshold: 14, editors: [ 'josm' ] }, });
+		// fadeAnimation: false - https://github.com/Zverik/leaflet-grayscale#usage
+		// tap: false -  https://github.com/Leaflet/Leaflet/issues/7255
+		map = L.map('mapFrame', { fadeAnimation: false, tap: false, editInOSMControlOptions: { zoomThreshold: 14, editors: [ 'josm' ] }, });
 
 		if (!embed)
 		{
